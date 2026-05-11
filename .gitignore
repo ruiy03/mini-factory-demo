@@ -1,0 +1,23 @@
+/.bundle/
+/.yardoc
+/_yardoc/
+/coverage/
+/doc/
+/pkg/
+/spec/reports/
+/tmp/
+
+# rspec failure tracking
+.rspec_status
+
+# Ruby LSP local cache (gem index, freshness hash, etc.)
+/.ruby-lsp/
+
+# Some setups list `.claude/` in their global gitignore. Un-ignore it here
+# so this project always tracks .claude/ (hook implementation, scenarios.json,
+# settings.json, etc.).
+!/.claude/
+!/.claude/**
+
+# Hook runtime debug logs are not tracked (a JSON file is written on every fire).
+/.claude/hook_logs/
