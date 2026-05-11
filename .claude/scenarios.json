@@ -1,0 +1,85 @@
+{
+  "_comment": "Mini-scale port of Software Factory's `scenarios + satisfaction`. Each scenario describes 'what makes the user happy' in plain language; the LLM judge (judge.sh) asks Claude for a 0-100 satisfaction across N_TRIALS runs (default 3) and averages them per scenario id. Anything below the threshold makes the Stop hook exit 2. The PreToolUse hook blocks edits to this file (zoning: tests must adapt to specs, specs must not be relaxed to fit a weak implementation).",
+  "target_file": "lib/mini_factory_demo/user.rb",
+  "satisfaction_threshold": 70,
+  "scenarios": [
+    {
+      "id": 1,
+      "spec": "full_name",
+      "name": "joins both names with a single space",
+      "intent": "When both first_name and last_name are given, full_name returns them joined by a single ASCII space. No leading, trailing, or doubled whitespace appears in the result."
+    },
+    {
+      "id": 2,
+      "spec": "full_name",
+      "name": "first name only when last_name is nil",
+      "intent": "When last_name is nil, full_name returns first_name as-is (without any trailing whitespace)."
+    },
+    {
+      "id": 3,
+      "spec": "full_name",
+      "name": "last name only when first_name is nil",
+      "intent": "When first_name is nil, full_name returns last_name as-is (without any leading whitespace)."
+    },
+    {
+      "id": 4,
+      "spec": "full_name",
+      "name": "empty string when both names are nil",
+      "intent": "When both names are nil, full_name returns the empty string \"\". It does not raise NoMethodError or any other exception."
+    },
+    {
+      "id": 5,
+      "spec": "full_name",
+      "name": "ASCII whitespace is trimmed; Unicode whitespace passes through",
+      "intent": "ASCII whitespace surrounding either name is stripped before joining. The result contains no extra whitespace. Full-width space (U+3000) and other Unicode whitespace are intentionally NOT trimmed."
+    },
+    {
+      "id": 6,
+      "spec": "email_address",
+      "name": "well-formed email is returned unchanged",
+      "intent": "When email is already lowercase and free of surrounding whitespace, email_address returns the same string. No casing or format conversion is applied."
+    },
+    {
+      "id": 7,
+      "spec": "email_address",
+      "name": "uppercase letters are normalized to lowercase",
+      "intent": "When email contains uppercase letters, email_address returns the fully lowercased form. Both the local part and the domain are lowercased."
+    },
+    {
+      "id": 8,
+      "spec": "email_address",
+      "name": "surrounding ASCII whitespace is trimmed",
+      "intent": "When email has leading or trailing ASCII whitespace, email_address returns the trimmed and lowercased form. Trim and lowercase apply together."
+    },
+    {
+      "id": 9,
+      "spec": "email_address",
+      "name": "nil stays nil",
+      "intent": "When email is nil, email_address returns nil. It does not raise an exception, and it does not return an empty string \"\"."
+    },
+    {
+      "id": 10,
+      "spec": "age_in_years",
+      "name": "full age when the birthday already passed this year",
+      "intent": "When the birthday has already occurred this year (birthdate's month/day are before today's), age equals (today.year - birthdate.year) with no decrement."
+    },
+    {
+      "id": 11,
+      "spec": "age_in_years",
+      "name": "decremented age when the birthday is later this year",
+      "intent": "When the birthday has not yet occurred this year (birthdate's month/day are after today's), age equals (today.year - birthdate.year - 1) — that is, decremented by 1."
+    },
+    {
+      "id": 12,
+      "spec": "age_in_years",
+      "name": "no decrement on the birthday itself",
+      "intent": "When today.month == birthdate.month AND today.day == birthdate.day, age is NOT decremented. Today counts as the day they turn the new age."
+    },
+    {
+      "id": 13,
+      "spec": "age_in_years",
+      "name": "nil birthdate yields nil",
+      "intent": "When birthdate is nil, age_in_years returns nil. No exception is raised, and 0 or negative values are not returned."
+    }
+  ]
+}
