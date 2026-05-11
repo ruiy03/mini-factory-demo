@@ -1,0 +1,28 @@
+{
+  "_comment_hooks": "Mini-scale port of Software Factory's goal_gate as 2 stable hooks. Stop is the core check (rspec / rubocop / LLM judge). PreToolUse is the preventive guard (blocks edits to out-of-scope files and to scenarios.json itself).",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Edit|Write|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/pre_tool_use.sh",
+            "timeout": 15
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": ".claude/hooks/stop.sh",
+            "timeout": 120
+          }
+        ]
+      }
+    ]
+  }
+}
